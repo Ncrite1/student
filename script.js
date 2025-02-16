@@ -20,6 +20,7 @@ function registerUser() {
     .then(data => {
         if (data.success) {
             alert("Регистрация успешна!");
+            localStorage.setItem('isRegistered', 'true'); // Сохраняем состояние
             window.location.href = '/';
         } else {
             alert("Ошибка: " + data.error);
@@ -27,7 +28,6 @@ function registerUser() {
     })
     .catch(error => console.error('Ошибка:', error));
 }
-
 
 function login() {
     const name = document.getElementById('name').value;
@@ -53,6 +53,7 @@ function login() {
     .then(data => {
         if (data.success) {
             alert("Вход успешен!");
+            localStorage.setItem('isRegistered', 'true'); // Сохраняем состояние
             window.location.href = '/';
         } else {
             alert("Ошибка: " + data.error);
