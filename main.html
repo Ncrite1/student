@@ -8,8 +8,17 @@
     <link rel="stylesheet" href="main_css.css"> 
 </head>
 <body>
-    <h1 id="welcome-message">Добро пожаловать на сайт!</h1>
-    <p>Перейдите на <a href="/users">страницу Регистрации</a></p>
+    
+    <div class="container">
+        <div class="middle"><h1 id="welcome-message">Добро пожаловать на сайт!</h1></div>
+        <div class="right">
+        <h2 id="acc_name"></h2>
+
+        <button id="login_button" onclick="go_login()">Вход</button>
+
+        <button id="logout_button" onclick="logout()">Выйти</button>
+        </div>
+    </div>
     <script src="/script.js"></script>
 </body>
 </html>

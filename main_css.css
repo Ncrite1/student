@@ -11,7 +11,7 @@ p {
     color: #555;
 }
 button {
-    background-color: #008cba;
+    background-color: #007fba;
     color: white;
     padding: 10px 20px;
     border: none;
@@ -19,5 +19,29 @@ button {
     font-size: 16px;
 }
 button:hover {
-    background-color: #005f73;
+    background-color: #016b86;
 }
+
+.container {
+    position: absolute; /* Абсолютное позиционирование */
+    top: 10px;  /* Отступ сверху */
+    right: 10px; /* Отступ справа */    
+    display: flex;
+    justify-content: space-between; /* Раздвигаем элементы */
+    align-items: center; /* Выравниваем по вертикали */
+    width: 98%;
+    padding: 10px;
+    background: rgb(128, 206, 134);
+}
+
+.middle {
+    margin: 0 auto; /* Центрируем первый элемент */
+}
+
+.right {
+    display: flex;
+    gap: 10px; /* Добавляем расстояние между элементами */
+    
+}
+
+

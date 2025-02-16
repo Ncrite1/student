@@ -31,53 +31,82 @@ app.get('/users', (req, res) => {
 app.post('/register', (req, res) => {
     const { name, surname, group, password } = req.body;
 
-    console.log("Получены данные:", req.body); // Выведет в консоль, что приходит
+    console.log("Получены данные:", req.body);
 
     if (!name || !surname || !group || !password) {
         return res.json({ success: false, error: "Заполните все поля" });
     }
 
-    db.run('INSERT INTO users (name, sname, ngroup, pass) VALUES (?, ?, ?, ?)', 
-        [name, surname, group, password], 
-        function(err) {
-            if (err) {
-                console.error("Ошибка при добавлении в БД:", err.message);
-                return res.status(500).json({ success: false, error: "Ошибка при добавлении" });
-            }
+    db.get('SELECT * FROM users WHERE name = ? AND sname = ? AND ngroup = ?', 
+        [name, surname, group], (err, row) => {
 
-            res.json({ success: true });
-        }
-        
-    );
-});
-
-app.post('/login', (req, res) => {
-    const { name, surname, group, password } = req.body;
-
-    console.log("Получены данные:", req.body); // Проверим, что данные приходят
-
-    if (!name || !surname || !group || !password) {
-        return res.json({ success: false, error: "Заполните все поля" });
-    }
-
-    db.get('SELECT * FROM users WHERE name = ? AND sname = ? AND ngroup = ?', [name, surname, group], (err, row) => {
         if (err) {
+            console.error("Ошибка БД:", err.message);
             return res.status(500).json({ success: false, error: "Ошибка сервера" });
         }
-        if (!row) {
-            return res.json({ success: false, error: "Пользователь не найден" });
+
+        if (row) {
+            return res.json({ success: false, error: "Пользователь уже существует!" });
         }
 
-        // Проверка пароля
-        if (row.pass !== password) {
-            return res.json({ success: false, error: "Неверный пароль" });
-        }
+        db.run('INSERT INTO users (name, sname, ngroup, pass) VALUES (?, ?, ?, ?)', 
+            [name, surname, group, password], 
+            function(err) {
+                if (err) {
+                    console.error("Ошибка при добавлении в БД:", err.message);
+                    return res.status(500).json({ success: false, error: "Ошибка при добавлении" });
+                }
 
-        res.json({ success: true });
+                // После успешного добавления пользователя отправляем его данные
+                const responseData = { 
+                    success: true, 
+                    user: { name: req.body.name, surname: req.body.surname, group: req.body.group }  
+                };
+
+                console.log("Ответ сервера:", responseData); // <-- Теперь точно отправится `user`
+
+                res.json(responseData);
+            }
+        );
     });
 });
 
 
+
+app.post('/login', (req, res) => {
+    const { name, surname, group, password } = req.body;
+
+    if (!name || !surname || !group || !password) {
+        return res.json({ success: false, error: "Заполните все поля" });
+    }
+
+    db.get('SELECT * FROM users WHERE name = ? AND sname = ? AND ngroup = ?', 
+        [name, surname, group], (err, row) => {
+
+        if (err) {
+            console.error("Ошибка БД:", err.message);
+            return res.status(500).json({ success: false, error: "Ошибка сервера" });
+        }
+
+        if (!row) {
+            return res.json({ success: false, error: "Пользователь не найден!" });
+        }
+
+        // Проверяем пароль
+        if (row.pass !== password) {
+            return res.json({ success: false, error: "Неверный пароль!" });
+        }
+
+        res.json({ 
+            success: true, 
+            user: { 
+                name: row.name, 
+                surname: row.sname, 
+                group: row.ngroup 
+            } 
+        });
+    });
+});
 
 // Запуск сервера
 app.listen(port, () => {
