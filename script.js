@@ -1,17 +1,63 @@
-document.addEventListener('DOMContentLoaded', function() {
-    fetch('/users-data')  // Запрос к серверу на получение данных о пользователях
-        .then(response => response.json())
-        .then(data => {
-            const userTable = document.getElementById('user-table');
-            data.users.forEach(user => {
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td>${user.id}</td>
-                    <td>${user.name}</td>
-                    <td>${user.email}</td>
-                `;
-                userTable.appendChild(row);  // Добавляем строку в таблицу
-            });
-        })
-        .catch(error => console.error('Ошибка при загрузке данных:', error));
-});
+function registerUser() {
+    const name = document.getElementById('name').value;
+    const surname = document.getElementById('sname').value;
+    const group = document.getElementById('ngroup').value;
+    const password = document.getElementById('pass').value;
+
+    if (!name || !surname || !group || !password) {
+        alert("Заполните все поля!");
+        return;
+    }
+
+    fetch('/register', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ name, surname, group, password })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            alert("Регистрация успешна!");
+            window.location.href = '/';
+        } else {
+            alert("Ошибка: " + data.error);
+        }
+    })
+    .catch(error => console.error('Ошибка:', error));
+}
+
+
+function login() {
+    const name = document.getElementById('name').value;
+    const surname = document.getElementById('sname').value;
+    const group = document.getElementById('ngroup').value;
+    const password = document.getElementById('pass').value;
+
+    if (!name || !surname || !group || !password) {
+        alert("Заполните все поля!");
+        return;
+    }
+
+    console.log("Данные для отправки на сервер:", { name, surname, group, password });
+
+    fetch('/login', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ name, surname, group, password })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            alert("Вход успешен!");
+            window.location.href = '/';
+        } else {
+            alert("Ошибка: " + data.error);
+        }
+    })
+    .catch(error => console.error('Ошибка:', error));
+}
+
