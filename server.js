@@ -26,6 +26,19 @@ app.get('/users', (req, res) => {
     
 });
 
+app.get('/disciplines', (req, res) => {
+    res.sendFile(__dirname + '/disciplines.html'); // Отправляет файл с дисциплинами
+});
+
+app.get('/notes', (req, res) => {
+    res.sendFile(path.join(__dirname, 'notes.html'));  // Отдаем notes.html из текущей директории
+    
+});
+
+app.get('/tasks', (req, res) => {
+    res.sendFile(path.join(__dirname, 'tasks.html'));  // Отдаем tasks.html из текущей директории
+    
+});
 
 
 app.post('/register', (req, res) => {
@@ -49,7 +62,7 @@ app.post('/register', (req, res) => {
             return res.json({ success: false, error: "Пользователь уже существует!" });
         }
 
-        db.run('INSERT INTO users (name, sname, ngroup, pass) VALUES (?, ?, ?, ?)', 
+        db.run('INSERT INTO users (name, sname, ngroup, pass) VALUES (?, ?, ?, ?)',  
             [name, surname, group, password], 
             function(err) {
                 if (err) {

@@ -105,3 +105,17 @@ document.addEventListener("DOMContentLoaded", function () {
 function go_login() {
     window.location.href = '/users';
 }
+
+function toggleMenu() {
+    const menu = document.getElementById("menu");
+    menu.style.display = menu.style.display === "block" ? "none" : "block";
+}
+
+function is_user_login(event) {
+    if (localStorage.getItem('isRegistered') !== 'true') {
+        alert("Пожалуйста, зарегистрируйтесь!");
+        event.preventDefault();
+    } else {
+        window.location.href = targetUrl; // Переход после проверки
+    }
+}
