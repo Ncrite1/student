@@ -1,16 +1,16 @@
 body {
     font-family: Arial, sans-serif;
-    text-align: center;
     background-color: #f4f4f4;
     margin: 50px;
 }
 h1 {
     color: #333;
+    text-align: center; /* Центрируем текст */
 }
 p {
     color: #555;
 }
-button {
+.butt {
     background-color: #007fba;
     color: white;
     padding: 10px 20px;
@@ -18,11 +18,11 @@ button {
     cursor: pointer;
     font-size: 16px;
 }
-button:hover {
+.butt:hover {
     background-color: #016b86;
 }
 
-.container {
+.container_enter {
     position: absolute; /* Абсолютное позиционирование */
     top: 10px;  /* Отступ сверху */
     right: 10px; /* Отступ справа */    
@@ -91,3 +91,52 @@ button:hover {
 .menu a:hover {
     background-color: #f0f0f0;
 }
+
+.add_discipline {
+    width: 30px;  /* Делаем ширину и высоту одинаковыми */
+    height: 30px;
+    background-color: #3498db;
+    color: white;
+    font-size: 18px;
+    font-weight: bold;
+    border: none;
+    border-radius: 50%; /* Это делает кнопку круглой */
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2);
+    transition: background-color 0.3s ease;
+}
+
+.add_discipline:hover {
+    background-color: #2980b9;
+}
+
+.container_discipline {
+    display:block; /* Располагаем элементы в строку */
+    gap: 10px; /* Расстояние между элементами */
+}
+
+.container_discipline {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.disciplineBlock {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+button.add_discipline, button.remove_discipline {
+    padding: 5px 10px;
+    cursor: pointer;
+}
+
+input[type="text"] {
+    padding: 5px;
+    width: 200px;
+}
+
