@@ -111,12 +111,12 @@ function toggleMenu() {
     menu.style.display = menu.style.display === "block" ? "none" : "block";
 }
 
-function is_user_login(event) {
+function is_user_login(event, url) {
     if (localStorage.getItem('isRegistered') !== 'true') {
         alert("Пожалуйста, зарегистрируйтесь!");
         event.preventDefault();
     } else {
-        window.location.href = targetUrl; // Переход после проверки
+        window.location.href = url; // Переход после проверки
     }
 }
 
@@ -198,9 +198,8 @@ function save_disciplines() {
 
     if (disciplines.length > 0) {
         console.log("Сохраненные дисциплины:", disciplines);
-        // Здесь вы можете отправить данные на сервер
-        // Например:
-        // fetch('/save-disciplines', { method: 'POST', body: JSON.stringify(disciplines) });
+        
+        
     } else {
         alert("Пожалуйста, добавьте хотя бы одну дисциплину.");
     }
