@@ -6,6 +6,7 @@ body {
 h1 {
     color: #333;
     text-align: center; /* Центрируем текст */
+    margin-bottom: 50px;
 }
 p {
     color: #555;
@@ -64,6 +65,7 @@ p {
     height: 5px;
     background-color: black;
     border-radius: 5px;
+
 }
 
 /* Скрытое меню */
@@ -116,6 +118,7 @@ p {
 .container_discipline {
     display:block; /* Располагаем элементы в строку */
     gap: 10px; /* Расстояние между элементами */
+    margin-bottom: 20px;
 }
 
 .container_discipline {

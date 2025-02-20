@@ -138,6 +138,7 @@ function add_discipline() {
     // Создаем новый блок дисциплины (с полем ввода и кнопками)
     const disciplineBlock = document.createElement("div");
     disciplineBlock.classList.add("disciplineBlock");
+    disciplineBlock.style.marginTop = "20px"; // Добавляем отступ сверху
 
     // Создаем кнопку для удаления
     const removeButton = document.createElement("button");
@@ -192,14 +193,31 @@ function save_disciplines() {
     inputs.forEach(input => {
         const disciplineName = input.value.trim();
         if (disciplineName) {
-            disciplines.push(disciplineName); // Добавляем дисциплину в массив, если она не пустая
+            disciplines.push(disciplineName);
         }
     });
 
     if (disciplines.length > 0) {
-        console.log("Сохраненные дисциплины:", disciplines);
-        
-        
+        console.log("Отправляемые данные:", JSON.stringify({ disciplines }));
+
+        fetch('/save_disciplines', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ disciplines }) 
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert("Дисциплины сохранены!");
+                console.log("Сохраненные дисциплины:", disciplines);
+            } else {
+                alert("Ошибка при сохранении: " + data.error);
+            }
+        })
+        .catch(error => {
+            console.error("Ошибка:", error);
+            alert("Произошла ошибка при сохранении дисциплин");
+        });
     } else {
         alert("Пожалуйста, добавьте хотя бы одну дисциплину.");
     }

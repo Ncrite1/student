@@ -4,6 +4,7 @@ const sqlite3 = require('sqlite3').verbose();  // Подключаем SQLite
 const app = express();
 const port = 3000;
 const bodyParser = require('body-parser');
+const userId = 0;
 
 
 // Создаем подключение к базе данных SQLite
@@ -62,25 +63,39 @@ app.post('/register', (req, res) => {
             return res.json({ success: false, error: "Пользователь уже существует!" });
         }
 
-        db.run('INSERT INTO users (name, sname, ngroup, pass) VALUES (?, ?, ?, ?)',  
-            [name, surname, group, password], 
-            function(err) {
+        db.run(
+            'INSERT INTO users (name, sname, ngroup, pass) VALUES (?, ?, ?, ?)',
+            [name, surname, group, password],
+            function (err) {
                 if (err) {
-                    console.error("Ошибка при добавлении в БД:", err.message);
-                    return res.status(500).json({ success: false, error: "Ошибка при добавлении" });
+                    console.error('Ошибка при добавлении в БД:', err.message);
+                    return res.status(500).json({ success: false, error: 'Ошибка при добавлении' });
                 }
-
-                // После успешного добавления пользователя отправляем его данные
-                const responseData = { 
-                    success: true, 
-                    user: { name: req.body.name, surname: req.body.surname, group: req.body.group }  
-                };
-
-                console.log("Ответ сервера:", responseData); // <-- Теперь точно отправится `user`
-
-                res.json(responseData);
+        
+                userId = this.lastID; // Получаем ID нового пользователя
+        
+                // Добавляем запись в disciplines с user_id
+                db.run(
+                    'INSERT INTO disciplines (user_id, discipline_name) VALUES (?, ?)',
+                    [userId, ''],
+                    function (err) {
+                        if (err) {
+                            console.error('Ошибка при добавлении дисциплины:', err.message);
+                            return res.status(500).json({ success: false, error: 'Ошибка при добавлении дисциплины' });
+                        }
+        
+                        const responseData = {
+                            success: true,
+                            user: { id: userId, name, surname, group },
+                        };
+        
+                        console.log('Ответ сервера:', responseData);
+                        res.json(responseData);
+                    }
+                );
             }
         );
+        
     });
 });
 
@@ -118,8 +133,35 @@ app.post('/login', (req, res) => {
                 group: row.ngroup 
             } 
         });
+        userId = row.id;
     });
 });
+
+app.post('/save_disciplines', (req, res) => {
+    const { disciplines } = req.body;
+
+    if (!userId || !Array.isArray(disciplines) || disciplines.length === 0) {
+        return res.status(400).json({ success: false, error: "Некорректные данные" });
+    }
+
+    const placeholders = disciplines.map(() => "(?, ?)").join(", ");
+    const values = disciplines.flatMap((name) => [userId, name]);
+
+    const sql = `INSERT INTO disciplines (user_id, discipline_name) VALUES ${placeholders}`;
+
+    db.run(sql, values, function (err) {
+        if (err) {
+            console.error("Ошибка при сохранении дисциплин:", err.message);
+            return res.status(500).json({ success: false, error: "Ошибка при сохранении" });
+        }
+
+        res.json({ success: true, message: "Дисциплины сохранены" });
+    });
+});
+
+
+
+
 
 // Запуск сервера
 app.listen(port, () => {
@@ -129,3 +171,5 @@ app.listen(port, () => {
 app.post ('/save_disciplines', (req, res) =>{
     
 });
+
+
