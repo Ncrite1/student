@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Страница регистрации</title>
+    <link rel="stylesheet" href="reg.css"> 
+</head>
+<body>
+    <div class="center_box">
+        <h1>Регистрация</h1>
+        <div class="input_box">
+            <input type="text" id="name" placeholder="Введите имя аккаунта">
+            <dir></dir>
+            <div class="verification">
+            <input type="text" id="email" placeholder="Введите e-mail">
+            <button onclick="sendVerification()">Отправить код</button>
+            </div>
+            <dir></dir>
+            <input type="text" id="name" placeholder="Введите код">
+            <dir></dir>
+            <input type="password" id="pass" placeholder="Введите пароль">
+            <dir></dir>
+            <button onclick="login()">Вход</button>
+            <button onclick="registerUser()">Регистрация</button>
+        </div>
+        <p>Hа <a href="/">Главную страницу</a></p>
+    </div>
+    <script src="script.js"></script>  <!-- Подключаем JavaScript файл -->
+</body>
+</html>

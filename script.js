@@ -1,10 +1,9 @@
 function registerUser() {
     const name = document.getElementById('name').value;
-    const surname = document.getElementById('sname').value;
-    const group = document.getElementById('ngroup').value;
+    const surname = document.getElementById('email').value;
     const password = document.getElementById('pass').value;
 
-    if (!name || !surname || !group || !password) {
+    if (!name || !surname || !password) {
         alert("Заполните все поля!");
         return;
     }
@@ -14,7 +13,7 @@ function registerUser() {
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ name, surname, group, password })
+        body: JSON.stringify({ name, surname, password })
     })
     .then(response => response.json())
     .then(data => {
@@ -37,21 +36,20 @@ function registerUser() {
 
 function login() {
     const name = document.getElementById('name').value;
-    const surname = document.getElementById('sname').value;
-    const group = document.getElementById('ngroup').value;
+    const surname = document.getElementById('email').value;
     const password = document.getElementById('pass').value;
 
-    if (!name || !surname || !group || !password) {
+    if (!name || !surname || !password) {
         alert("Заполните все поля!");
         return;
     }
 
-    console.log("Данные для отправки на сервер:", { name, surname, group, password });
+    console.log("Данные для отправки на сервер:", { name, surname, password });
 
     fetch('/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name, surname, group, password })
+        body: JSON.stringify({ name, surname, password })
     })
     .then(response => response.json())
     .then(data => {
@@ -103,7 +101,7 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 function go_login() {
-    window.location.href = '/users';
+    window.location.href = '/reg';
 }
 
 function toggleMenu() {
@@ -221,4 +219,24 @@ function save_disciplines() {
     } else {
         alert("Пожалуйста, добавьте хотя бы одну дисциплину.");
     }
+}
+
+async function sendVerification() {
+    const email = document.getElementById("email").value;
+    const response = await fetch("/send-code", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email }),
+    });
+    alert(await response.text());
+}
+
+async function verifyCode() {
+    const code = document.getElementById("code").value;
+    const response = await fetch("/verify-code", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ code }),
+    });
+    alert(await response.text());
 }

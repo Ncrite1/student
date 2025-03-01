@@ -2,6 +2,7 @@ const express = require('express');
 const path = require('path');
 const sqlite3 = require('sqlite3').verbose();  // Подключаем SQLite
 const app = express();
+const nodemailer = require("nodemailer");
 const port = 3000;
 const bodyParser = require('body-parser');
 const userId = 0;
@@ -16,14 +17,18 @@ app.use(bodyParser.json());  // Разбор JSON-запросов
 app.use(express.json()); // Обрабатывает JSON-запросы
 app.use(express.urlencoded({ extended: true })); // Обрабатывает form-data
 
+let verificationCode = "";
+let savedEmail = "";
+
+
 // Главная страница, отдающая main.html
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'main.html'));  // Отдаем main.html из текущей директории
 });
 
 // Страница пользователей
-app.get('/users', (req, res) => {
-    res.sendFile(path.join(__dirname, 'users.html'));  // Отдаем users.html из текущей директории
+app.get('/reg', (req, res) => {
+    res.sendFile(path.join(__dirname, 'reg.html'));  // Отдаем reg.html из текущей директории
     
 });
 
@@ -43,16 +48,16 @@ app.get('/tasks', (req, res) => {
 
 
 app.post('/register', (req, res) => {
-    const { name, surname, group, password } = req.body;
+    const { name, surname, password } = req.body;
 
     console.log("Получены данные:", req.body);
 
-    if (!name || !surname || !group || !password) {
+    if (!name || !surname || !password) {
         return res.json({ success: false, error: "Заполните все поля" });
     }
 
-    db.get('SELECT * FROM users WHERE name = ? AND sname = ? AND ngroup = ?', 
-        [name, surname, group], (err, row) => {
+    db.get('SELECT * FROM users WHERE name = ? AND sname = ?', 
+        [name, surname], (err, row) => {
 
         if (err) {
             console.error("Ошибка БД:", err.message);
@@ -64,8 +69,8 @@ app.post('/register', (req, res) => {
         }
 
         db.run(
-            'INSERT INTO users (name, sname, ngroup, pass) VALUES (?, ?, ?, ?)',
-            [name, surname, group, password],
+            'INSERT INTO users (name, sname, pass) VALUES (?, ?, ?)',
+            [name, surname, password],
             function (err) {
                 if (err) {
                     console.error('Ошибка при добавлении в БД:', err.message);
@@ -86,7 +91,7 @@ app.post('/register', (req, res) => {
         
                         const responseData = {
                             success: true,
-                            user: { id: userId, name, surname, group },
+                            user: { id: userId, name, surname },
                         };
         
                         console.log('Ответ сервера:', responseData);
@@ -102,14 +107,14 @@ app.post('/register', (req, res) => {
 
 
 app.post('/login', (req, res) => {
-    const { name, surname, group, password } = req.body;
+    const { name, surname, password } = req.body;
 
-    if (!name || !surname || !group || !password) {
+    if (!name || !surname || !password) {
         return res.json({ success: false, error: "Заполните все поля" });
     }
 
-    db.get('SELECT * FROM users WHERE name = ? AND sname = ? AND ngroup = ?', 
-        [name, surname, group], (err, row) => {
+    db.get('SELECT * FROM users WHERE name = ? AND sname = ?', 
+        [name, surname], (err, row) => {
 
         if (err) {
             console.error("Ошибка БД:", err.message);
@@ -129,11 +134,10 @@ app.post('/login', (req, res) => {
             success: true, 
             user: { 
                 name: row.name, 
-                surname: row.sname, 
-                group: row.ngroup 
+                surname: row.email, 
             } 
         });
-        userId = row.id;
+        //userId = row.id;
     });
 });
 
@@ -157,6 +161,35 @@ app.post('/save_disciplines', (req, res) => {
 
         res.json({ success: true, message: "Дисциплины сохранены" });
     });
+});
+
+const transporter = nodemailer.createTransport({
+    service: "gmail",
+    auth: { user: "zayatsn30@gmail.com", pass: "154628Dv" },
+});
+
+// Отправка кода на почту
+app.post("/send-code", async (req, res) => {
+    savedEmail = req.body.email;
+    verificationCode = Math.floor(100000 + Math.random() * 900000).toString(); // 6-значный код
+
+    await transporter.sendMail({
+        from: "zayatsn30@gmail.com",
+        to: savedEmail,
+        subject: "Код подтверждения",
+        text: `Ваш код: ${verificationCode}`,
+    });
+
+    res.send("Код отправлен!");
+});
+
+// Проверка кода
+app.post("/verify-code", (req, res) => {
+    if (req.body.code === verificationCode) {
+        res.send("E-mail подтвержден!");
+    } else {
+        res.send("Неверный код.");
+    }
 });
 
 
