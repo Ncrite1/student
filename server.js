@@ -165,8 +165,12 @@ app.post('/save_disciplines', (req, res) => {
 
 const transporter = nodemailer.createTransport({
     service: "gmail",
-    auth: { user: "zayatsn30@gmail.com", pass: "154628Dv" },
+    auth: { 
+        user: "zayatsn30@gmail.com", 
+        pass: "yvsa sapd ejfl nmym" // Сюда вставь сгенерированный пароль
+    },
 });
+
 
 // Отправка кода на почту
 app.post("/send-code", async (req, res) => {
