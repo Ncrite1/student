@@ -1,6 +1,6 @@
 body {
     font-family: Arial, sans-serif;
-    background: linear-gradient(to right, #4CAF50, #2E8B57);
+    background: linear-gradient(to right, #4caf4f, #2E8B57);
     color: #fff;
     display: flex;
     justify-content: center;
@@ -50,15 +50,15 @@ button:first-of-type {
     color: white;
 }
 button:first-of-type:hover {
-    background: #e68900;
+    background: #F19511;
 }
 
 button:last-of-type {
-    background: #2196F3;
+    background: #0450B3;
     color: white;
 }
 button:last-of-type:hover {
-    background: #0b7dda;
+    background: #003E8E;
 }
 
 p a {

@@ -77,7 +77,7 @@ app.post('/register', (req, res) => {
                     return res.status(500).json({ success: false, error: 'Ошибка при добавлении' });
                 }
         
-                userId = this.lastID; // Получаем ID нового пользователя
+                //userId = this.lastID; // Получаем ID нового пользователя
         
                 // Добавляем запись в disciplines с user_id
                 db.run(
