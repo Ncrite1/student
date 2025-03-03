@@ -6,6 +6,7 @@ const nodemailer = require("nodemailer");
 const port = 3000;
 const bodyParser = require('body-parser');
 const userId = 0;
+const bcrypt = require('bcrypt');
 
 
 // Создаем подключение к базе данных SQLite
@@ -32,6 +33,11 @@ app.get('/reg', (req, res) => {
     
 });
 
+app.get('/login', (req, res) => {
+    res.sendFile(path.join(__dirname, 'login.html'));  // Отдаем login.html из текущей директории
+    
+});
+
 app.get('/disciplines', (req, res) => {
     res.sendFile(__dirname + '/disciplines.html'); // Отправляет файл с дисциплинами
 });
@@ -46,76 +52,14 @@ app.get('/tasks', (req, res) => {
     
 });
 
-
-app.post('/register', (req, res) => {
-    const { name, surname, password } = req.body;
-
-    console.log("Получены данные:", req.body);
-
-    if (!name || !surname || !password) {
-        return res.json({ success: false, error: "Заполните все поля" });
-    }
-
-    db.get('SELECT * FROM users WHERE name = ? AND sname = ?', 
-        [name, surname], (err, row) => {
-
-        if (err) {
-            console.error("Ошибка БД:", err.message);
-            return res.status(500).json({ success: false, error: "Ошибка сервера" });
-        }
-
-        if (row) {
-            return res.json({ success: false, error: "Пользователь уже существует!" });
-        }
-
-        db.run(
-            'INSERT INTO users (name, sname, pass) VALUES (?, ?, ?)',
-            [name, surname, password],
-            function (err) {
-                if (err) {
-                    console.error('Ошибка при добавлении в БД:', err.message);
-                    return res.status(500).json({ success: false, error: 'Ошибка при добавлении' });
-                }
-        
-                //userId = this.lastID; // Получаем ID нового пользователя
-        
-                // Добавляем запись в disciplines с user_id
-                db.run(
-                    'INSERT INTO disciplines (user_id, discipline_name) VALUES (?, ?)',
-                    [userId, ''],
-                    function (err) {
-                        if (err) {
-                            console.error('Ошибка при добавлении дисциплины:', err.message);
-                            return res.status(500).json({ success: false, error: 'Ошибка при добавлении дисциплины' });
-                        }
-        
-                        const responseData = {
-                            success: true,
-                            user: { id: userId, name, surname },
-                        };
-        
-                        console.log('Ответ сервера:', responseData);
-                        res.json(responseData);
-                    }
-                );
-            }
-        );
-        
-    });
-});
-
-
-
 app.post('/login', (req, res) => {
-    const { name, surname, password } = req.body;
+    const { name, pass } = req.body;
 
-    if (!name || !surname || !password) {
+    if (!name || !pass) {
         return res.json({ success: false, error: "Заполните все поля" });
     }
 
-    db.get('SELECT * FROM users WHERE name = ? AND sname = ?', 
-        [name, surname], (err, row) => {
-
+    db.get('SELECT * FROM users WHERE name = ?', [name], (err, row) => {
         if (err) {
             console.error("Ошибка БД:", err.message);
             return res.status(500).json({ success: false, error: "Ошибка сервера" });
@@ -125,20 +69,19 @@ app.post('/login', (req, res) => {
             return res.json({ success: false, error: "Пользователь не найден!" });
         }
 
-        // Проверяем пароль
-        if (row.pass !== password) {
+        // Проверяем хэшированный пароль
+        if (row.pass !== pass) {
             return res.json({ success: false, error: "Неверный пароль!" });
-        }
-
-        res.json({ 
-            success: true, 
-            user: { 
-                name: row.name, 
-                surname: row.email, 
-            } 
+        }        
+            res.json({ 
+                success: true, 
+                user: { 
+                    id: row.id,
+                    username: row.name, 
+                    email: row.email 
+                } 
+            });
         });
-        //userId = row.id;
-    });
 });
 
 app.post('/save_disciplines', (req, res) => {
@@ -210,3 +153,59 @@ app.post ('/save_disciplines', (req, res) =>{
 });
 
 
+app.post('/register', (req, res) => {
+    const { name, surname, password } = req.body;
+
+    console.log("Получены данные:", req.body);
+
+    if (!name || !surname || !password) {
+        return res.json({ success: false, error: "Заполните все поля" });
+    }
+
+    db.get('SELECT * FROM users WHERE name = ? AND sname = ?', 
+        [name, surname], (err, row) => {
+
+        if (err) {
+            console.error("Ошибка БД:", err.message);
+            return res.status(500).json({ success: false, error: "Ошибка сервера" });
+        }
+
+        if (row) {
+            return res.json({ success: false, error: "Пользователь уже существует!" });
+        }
+
+        db.run(
+            'INSERT INTO users (name, sname, pass) VALUES (?, ?, ?)',
+            [name, surname, password],
+            function (err) {
+                if (err) {
+                    console.error('Ошибка при добавлении в БД:', err.message);
+                    return res.status(500).json({ success: false, error: 'Ошибка при добавлении' });
+                }
+        
+                //userId = this.lastID; // Получаем ID нового пользователя
+        
+                // Добавляем запись в disciplines с user_id
+                db.run(
+                    'INSERT INTO disciplines (user_id, discipline_name) VALUES (?, ?)',
+                    [userId, ''],
+                    function (err) {
+                        if (err) {
+                            console.error('Ошибка при добавлении дисциплины:', err.message);
+                            return res.status(500).json({ success: false, error: 'Ошибка при добавлении дисциплины' });
+                        }
+        
+                        const responseData = {
+                            success: true,
+                            user: { id: userId, name, surname },
+                        };
+        
+                        console.log('Ответ сервера:', responseData);
+                        res.json(responseData);
+                    }
+                );
+            }
+        );
+        
+    });
+});

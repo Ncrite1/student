@@ -35,42 +35,36 @@ function registerUser() {
 }
 
 function login() {
+    console.log("Функция login() вызвана!");
     const name = document.getElementById('name').value;
-    const surname = document.getElementById('email').value;
-    const password = document.getElementById('pass').value;
+    const pass = document.getElementById('pass').value;
 
-    if (!name || !surname || !password) {
+    if (!name || !pass) {
         alert("Заполните все поля!");
         return;
     }
 
-    console.log("Данные для отправки на сервер:", { name, surname, password });
+    console.log("Отправка данных на сервер:", { name, pass });
 
     fetch('/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name, surname, password })
+        body: JSON.stringify({ name, pass })
     })
     .then(response => response.json())
     .then(data => {
-        console.log("Ответ сервера:", data); // Выводим ответ сервера в консоль
-    
+        console.log("Ответ сервера:", data);
+
         if (data.success) {
             alert("Вход успешен!");
             localStorage.setItem('isRegistered', 'true');
-            
-            if (data.user) { 
-                localStorage.setItem('userName', data.user.name);  // Проверяем, есть ли `user`
-                window.location.href = '/';
-            } else {
-                alert("Ошибка: сервер не отправил имя пользователя");
-            }
+            localStorage.setItem('userName', data.user.username);
+            window.location.href = '/';
         } else {
             alert("Ошибка: " + data.error);
         }
     })
     .catch(error => console.error('Ошибка:', error));
-    
 }
 
 function logout() {
@@ -100,7 +94,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 });
 
-function go_login() {
+function go_reg() {
     window.location.href = '/reg';
 }
 
@@ -231,12 +225,20 @@ async function sendVerification() {
     alert(await response.text());
 }
 
-async function verifyCode() {
-    const code = document.getElementById("code").value;
-    const response = await fetch("/verify-code", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ code }),
-    });
-    alert(await response.text());
+    async function verifyCode() {
+        const code = document.getElementById("code").value;
+        const response = await fetch("/verify-code", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ code }),
+        });
+        alert(await response.text());
+    }
+
+function go_login() {
+    window.location.href = '/login';
+}
+
+function go_reg() {
+    window.location.href = '/reg';
 }
