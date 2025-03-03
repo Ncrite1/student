@@ -2,43 +2,38 @@ function registerUser() {
     const name = document.getElementById('name').value;
     const email = document.getElementById('email').value;
     const password = document.getElementById('pass').value;
-    console.log("Имя:", name, "Email:", email, "Пароль:", password);
+
     if (!name || !email || !password) {
         alert("Заполните все поля!");
         return;
     }
-
-    console.log("Отправка данных на сервер:", { name, email, password });
 
     fetch('/register', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ name, email, password }) // Отправляем пароль в открытом виде
+        body: JSON.stringify({ name, email, password })
     })
     .then(response => response.json())
     .then(data => {
-        console.log("Ответ от сервера:", data);
-        window.location.href = '/';
+        console.log("Ответ от сервера:", data); // Проверяем ответ от сервера
+
         if (data.success) {
             alert("Регистрация успешна!");
-            localStorage.setItem('isRegistered', 'true');
-
-            if (data.user && data.user.name) { 
+            localStorage.setItem('isRegistered', 'true'); 
+            if (data.user) { 
                 localStorage.setItem('userName', data.user.name);
-                window.location.href = '/';
+                console.log("Перенаправление на главную...");
+                window.location.href = '/';  // <-- Должно сработать
             } else {
-                alert("Ошибка: сервер не вернул данные пользователя");
+                alert("Ошибка: сервер не отправил имя пользователя");
             }
         } else {
             alert("Ошибка: " + data.error);
         }
     })
-    .catch(error => {
-        console.error("Ошибка запроса:", error);
-        alert("Ошибка соединения с сервером. Попробуйте позже.");
-    });
+    .catch(error => console.error('Ошибка запроса:', error));
 }
 
 
