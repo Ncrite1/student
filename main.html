@@ -22,13 +22,18 @@
             <a href="/#" onclick="is_user_login(event, '/notes')">Заметки</a>
             <a href="/#" onclick="is_user_login(event, '/tasks')">Задания</a>
         </div>
+
+        <div class="NameMenu" id="NameMenu">
+            <a onclick="profile()">Профиль</button></a>
+            <a onclick="logout()">Выйти</button></a>
+        </div>
+
         <div class="middle"><h1 id="welcome-message">Добро пожаловать на сайт!</h1></div>
         <div class="right">
-        <h2 id="acc_name"></h2>
-
+        <a class="aNameMenu" onclick="toggleNameMenu()"><h2 id="acc_name"></h2></a>
+        
         <button class="butt" id="login_button" onclick="go_reg()">Регистрация</button>
 
-        <button class="butt" id="logout_button" onclick="logout()">Выйти</button>
         </div>
     </div>
 

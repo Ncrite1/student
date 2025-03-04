@@ -101,8 +101,17 @@ function go_reg() {
     window.location.href = '/reg';
 }
 
+function profile(){
+    window.location.href = '/profile';
+}
+
 function toggleMenu() {
     const menu = document.getElementById("menu");
+    menu.style.display = menu.style.display === "block" ? "none" : "block";
+}
+
+function toggleNameMenu() {
+    const menu = document.getElementById("NameMenu");
     menu.style.display = menu.style.display === "block" ? "none" : "block";
 }
 
