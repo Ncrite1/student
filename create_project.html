@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Создание Товара</title>
+    <link rel="stylesheet" href="create_project.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Создание Товара</h1>
+        
+        <!-- Форма для создания товара -->
+        <form id="createProductForm">
+            <!-- Название товара -->
+            <div class="form-group">
+                <label for="productName">Название товара</label>
+                <input type="text" id="productName" name="name" placeholder="Введите название товара" required>
+            </div>
+
+            <!-- Описание товара -->
+            <div class="form-group">
+                <label for="productDescription">Описание товара</label>
+                <textarea id="productDescription" name="description" placeholder="Введите описание товара" required></textarea>
+            </div>
+
+            <!-- Цена товара -->
+            <div class="form-group">
+                <label for="productPrice">Цена товара</label>
+                <input type="number" id="productPrice" name="price" placeholder="Введите цену товара" required>
+            </div>
+
+            <!-- Фото товара -->
+            <div class="form-group">
+                <label for="productImage">Добавить фото товара</label>
+                <input type="file" id="productImage" name="image" accept="image/*" required>
+            </div>
+
+            <!-- Кнопка отправки -->
+            <button type="submit" id="submitBtn" onclick="create_product()">Создать товар</button>
+        </form>
+    </div>
+
+    <script src="/script.js"></script>
+</body>
+</html>

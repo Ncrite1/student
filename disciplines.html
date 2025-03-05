@@ -3,24 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Дисциплины</title>
-    <link rel="stylesheet" href="main_css.css"> 
+    <title>Каталог товаров</title>
+    <link rel="stylesheet" href="catalog.css">
 </head>
 <body>
-    <h1>Дисциплины</h1>
-    <div class="container_discipline">
-        <div class="disciplineBlock">
-            <button class="add_discipline" onclick="remove_discipline(this)">-</button>
-            <input type="text" placeholder="Дисциплина">
-            <button class="add_discipline" onclick="add_discipline()">+</button>
-        </div>
-        
+
+    <!-- Меню -->
+    <div class="menu">
+        <a href="/">Главная</a>
+        <a href="/catalog">Каталог</a>
+        <a href="/create_product">Создать товар</a>
     </div>
-    <div></div>
-    <button class="save_disciplines" onclick="save_disciplines()">Сохранить</button>
-    
-    
-    <p>Перейдите на <a href="/">Главную страницу</a></p>
-    <script src="/script.js"></script>
+
+    <!-- Заголовок -->
+    <div class="title">
+        <h1>Каталог товаров</h1>
+    </div>
+
+    <!-- Сетка товаров -->
+    <div class="product-grid" id="productGrid">
+        <!-- Карточки товаров будут подгружаться сюда -->
+    </div>
+
+    <script src="script.js"></script>
 </body>
 </html>
