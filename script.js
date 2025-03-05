@@ -10,32 +10,25 @@ function registerUser() {
 
     fetch('/register', {
         method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ name, email, password })
     })
     .then(response => response.json())
     .then(data => {
-        console.log("Ответ от сервера:", data); // Проверяем ответ от сервера
+        console.log("Ответ от сервера:", data);
 
         if (data.success) {
             alert("Регистрация успешна!");
             localStorage.setItem('isRegistered', 'true'); 
-            if (data.user) { 
-                localStorage.setItem('userName', data.user.name);
-                console.log("Перенаправление на главную...");
-                window.location.href = '/';  // <-- Должно сработать
-            } else {
-                alert("Ошибка: сервер не отправил имя пользователя");
-            }
+            localStorage.setItem('userId', data.user.id);   // ⬅ Сохраняем ID пользователя
+            localStorage.setItem('userName', data.user.name);
+            window.location.href = '/';
         } else {
             alert("Ошибка: " + data.error);
         }
     })
     .catch(error => console.error('Ошибка запроса:', error));
 }
-
 
 function login() {
     console.log("Функция login() вызвана!");
@@ -61,6 +54,7 @@ function login() {
         if (data.success) {
             alert("Вход успешен!");
             localStorage.setItem('isRegistered', 'true');
+            localStorage.setItem('userId', data.user.id);   // ⬅ Сохраняем ID пользователя
             localStorage.setItem('userName', data.user.username);
             window.location.href = '/';
         } else {
@@ -253,4 +247,31 @@ function go_login() {
 
 function go_reg() {
     window.location.href = '/reg';
+}
+
+document.addEventListener("DOMContentLoaded", function () {
+    loadUserProfile();
+});
+
+function loadUserProfile() {
+    const userId = localStorage.getItem('userId');  // Получаем сохранённый ID пользователя
+
+    if (!userId) {
+        alert("Ошибка: пользователь не авторизован!");
+        window.location.href = '/login.html';  // Перенаправляем на страницу входа
+        return;
+    }
+
+    fetch(`/user/${userId}`)  // Запрашиваем данные с сервера
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                document.getElementById("userName").textContent = data.user.name;
+                document.getElementById("userEmail").textContent = data.user.email;
+                document.getElementById("userBalance").textContent = data.user.balance;
+            } else {
+                alert("Ошибка загрузки профиля: " + data.error);
+            }
+        })
+        .catch(error => console.error("Ошибка запроса:", error));
 }

@@ -8,12 +8,18 @@
 </head>
 <body>
     <div class="profile-container">
-        <h1>Профиль пользователя</h1>
-        <p><strong>ID:</strong> <span id="userId"></span></p>
-        <p><strong>Имя:</strong> <input type="text" id="name"></p>
-        <p><strong>Email:</strong> <input type="email" id="email"></p>
-        <p><strong>Баланс:</strong> <span id="balance"></span> ₽</p>
-        <button onclick="updateProfile()">Сохранить</button>
+        <h1>Профиль</h1>
+
+        <div class="profile-item">
+            <span>Имя:</span><div id="userName">Nikita</div>
+        </div>
+        <div class="profile-item">
+            <span>Email:</span><div id="userEmail">nikita@example.com</div>
+        </div>
+        <div class="profile-item">
+            <span>Баланс:</span><div id="userBalance">100</div> $
+        </div>
+        <p>Hа <a href="/">Главную страницу</a></p>
     </div>
 
     <script src="script.js"></script>
