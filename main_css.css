@@ -192,29 +192,54 @@ h1 {
 .product-grid {
     display: flex;
     flex-wrap: wrap;
-    gap: 20px;
+    gap: 50px;
     justify-content: center;
 }
 
 .product-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; /* Равномерное распределение */
     background-color: #fff;
     border-radius: 8px;
     padding: 10px;
     width: 200px;
+    height: 300px; /* Фиксированная высота */
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     text-align: center;
 }
 
 .product-image {
-    width: 100%;
-    height: auto;
+    width: 100%;  /* Ширина подстраивается под карточку */
+    height: 150px; /* Фиксированная высота */
+    object-fit: contain; /* Уменьшает изображение, не обрезая его */
     border-radius: 5px;
+    background-color: #f9f9f9; /* Фон для прозрачных изображений */
+}
+
+
+.product-info {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end; /* Размещаем элементы внизу */
+    flex-grow: 1; /* Растягиваем, чтобы кнопка всегда была внизу */
 }
 
 .product-name {
     font-size: 16px;
     font-weight: bold;
-    margin-top: 10px;
+    color: #000;
+}
+
+.buy-btn {
+    background-color: #28a745;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
 }
 
 .product-description {
@@ -228,19 +253,6 @@ h1 {
     color: #28a745;
     font-weight: bold;
     margin-top: 10px;
-}
-
-
-/* Кнопка "Купить" */
-.buy-btn {
-    background-color: #28a745;
-    color: white;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 16px;
-    transition: background-color 0.3s ease;
 }
 
 .buy-btn:hover {

@@ -1,3 +1,5 @@
+console.log("Скрипт script.js загружен!");
+
 function registerUser() {
     const name = document.getElementById('name').value;
     const email = document.getElementById('email').value;
@@ -276,96 +278,108 @@ function loadUserProfile() {
         .catch(error => console.error("Ошибка запроса:", error));
 }
 
-function create_product(event) {
-    // Отменяем стандартное поведение формы (перезагрузку страницы)
-    event.preventDefault();
 
-    // Получаем данные из формы
-    const name = document.getElementById('productName').value;
-    const description = document.getElementById('productDescription').value;
-    const price = document.getElementById('productPrice').value;
-    const image = document.getElementById('productImage').files[0]; // Получаем выбранный файл
+document.addEventListener("DOMContentLoaded", async function () {
+    console.log("Скрипт загружен!");
 
-    // Проверяем, что все поля заполнены
-    if (!name || !description || !price || !image) {
-        alert("Пожалуйста, заполните все поля!");
-        return;
-    }
+    try {
+        const response = await fetch('/api/products');
+        console.log("Статус ответа:", response.status);
 
-    // Создаем FormData для отправки файла на сервер
-    const formData = new FormData();
-    formData.append('name', name);
-    formData.append('description', description);
-    formData.append('price', price);
-    formData.append('image', image);
+        const data = await response.json();
+        console.log("Полученные данные:", data);
 
-    // Отправляем данные на сервер
-    fetch('/create-product', {
-        method: 'POST',
-        body: formData
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.success) {
-            alert("Товар успешно создан!");
-            window.location.href = '/';  // Перенаправление на главную страницу (или куда угодно)
-        } else {
-            alert("Ошибка: " + data.error);
+        if (!Array.isArray(data)) {
+            throw new Error("Ошибка: данные не являются массивом!");
         }
-    })
-    .catch(error => {
-        console.error('Ошибка:', error);
-        alert("Произошла ошибка при отправке данных.");
-    });
-}
 
-// Добавляем обработчик события для отправки формы
-document.getElementById('createProductForm').addEventListener('submit', create_product);
+        const productGrid = document.querySelector('.product-grid');
+        console.log("Контейнер найден:", productGrid);
 
-document.addEventListener("DOMContentLoaded", function() {
-    // URL API для получения товаров
-    const apiUrl = "/api/products";
-    const productGrid = document.getElementById('productGrid');
+        data.forEach(product => {
+            const productCard = document.createElement('div');
+            productCard.classList.add('product-card');
 
-    // Запрос данных с сервера
-    fetch(apiUrl)
-        .then(response => response.json())
-        .then(data => {
-            // Для каждого товара создаем карточку
-            data.forEach(product => {
-                const productCard = document.createElement('div');
-                productCard.classList.add('product-card');
+            const productImage = document.createElement('img');
+            productImage.src = `/uploads/${product.image}`;  // Проверь путь!
+            productImage.alt = product.name;
+            productImage.classList.add('product-image');
+            productCard.appendChild(productImage);
 
-                // Вставляем картинку товара
-                const productImage = document.createElement('img');
-                productImage.src = `/images/${product.image}`;
-                productImage.alt = product.name;
-                productImage.classList.add('product-image');
-                productCard.appendChild(productImage);
+            const productName = document.createElement('div');
+            productName.classList.add('product-name');
+            productName.textContent = product.name;
+            productCard.appendChild(productName);
 
-                // Вставляем название товара
-                const productName = document.createElement('div');
-                productName.classList.add('product-name');
-                productName.textContent = product.name;
-                productCard.appendChild(productName);
+            const productPrice = document.createElement('div');
+            productPrice.classList.add('product-price');
+            productPrice.textContent = `$${product.price}`;
+            productCard.appendChild(productPrice);
+            
 
-                // Вставляем описание товара
-                const productDescription = document.createElement('div');
-                productDescription.classList.add('product-description');
-                productDescription.textContent = product.description;
-                productCard.appendChild(productDescription);
-
-                // Вставляем цену товара
-                const productPrice = document.createElement('div');
-                productPrice.classList.add('product-price');
-                productPrice.textContent = `$${product.price}`;
-                productCard.appendChild(productPrice);
-
-                // Добавляем карточку на страницу
-                productGrid.appendChild(productCard);
+            const productPage = document.createElement('button');
+            productPage.classList.add('buy-btn');
+            productPage.textContent = 'Страница товара'
+            productCard.appendChild(productPage)
+            productPage.addEventListener('click', () => {
+                window.location.href = `/product/${product.id}`;
             });
-        })
-        .catch(error => {
-            console.error('Ошибка загрузки данных: ', error);
+            
+
+            productCard.appendChild(productPage);
+            productGrid.appendChild(productCard);
         });
+
+    } catch (error) {
+        console.error("Ошибка загрузки:", error);
+    }
 });
+
+document.addEventListener("DOMContentLoaded", async function () {
+    console.log("DOMContentLoaded сработал!");
+
+    try {
+        console.log("Отправка запроса к /api/products...");
+        const response = await fetch('/api/products');
+
+        console.log("Ответ получен!", response);
+        
+        if (!response.ok) {
+            throw new Error(`Ошибка HTTP: ${response.status}`);
+        }
+
+        const data = await response.json();
+        console.log("Полученные данные:", data);
+    } catch (error) {
+        console.error("Ошибка загрузки данных:", error);
+    }
+});
+
+// Получаем кнопку и добавляем обработчик события
+document.getElementById('buyBtn').addEventListener('click', async function() {
+    // Получаем productId из атрибута data-product-id
+    const productId = this.getAttribute('data-product-id');
+    
+    // Предположим, что userId доступен глобально
+    const userId = 1;  // Замените на реальный userId
+
+    // Вызов функции buy с userId и productId
+    await buy(userId, productId);
+});
+
+
+async function buy(userId, productId) {
+    try {
+        // Отправляем запрос на сервер, чтобы выполнить покупку
+        const response = await fetch(`/buy/${userId}/${productId}`, { method: 'POST' });
+
+        if (response.ok) {
+            const result = await response.json();
+            alert(result.message);  // Покажем сообщение об успешной покупке
+        } else {
+            console.error("Ошибка при покупке товара");
+        }
+    } catch (error) {
+        console.error("Ошибка при выполнении запроса:", error);
+    }
+}
