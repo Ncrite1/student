@@ -368,18 +368,51 @@ document.getElementById('buyBtn').addEventListener('click', async function() {
 });
 
 
-async function buy(userId, productId) {
+async function buy(userId, productId, price) {
     try {
-        // Отправляем запрос на сервер, чтобы выполнить покупку
-        const response = await fetch(`/buy/${userId}/${productId}`, { method: 'POST' });
+        console.log(`Попытка покупки товара ID: ${productId} пользователем ID: ${userId}`);
+        
+        // 1. Получаем текущий баланс пользователя
+        const balanceResponse = await fetch(`/user/${userId}/balance`);
+        const balanceData = await balanceResponse.json();
 
-        if (response.ok) {
-            const result = await response.json();
-            alert(result.message);  // Покажем сообщение об успешной покупке
-        } else {
-            console.error("Ошибка при покупке товара");
+        console.log("Ответ от сервера (баланс):", balanceData); // Логируем ответ сервера
+
+        if (!balanceResponse.ok) {
+            throw new Error(balanceData.message || "Ошибка при получении баланса");
         }
+
+        let currentBalance = parseFloat(balanceData.balance);
+        let productPrice = parseFloat(price);
+
+        console.log(`Текущий баланс: ${balanceData.balance}, Цена товара: ${price}`);
+        console.log(`После преобразования: currentBalance = ${currentBalance}, productPrice = ${productPrice}`);
+
+        if (isNaN(currentBalance) || isNaN(productPrice)) {
+            throw new Error("Ошибка: некорректные данные баланса или цены товара");
+        }
+
+        // 2. Проверяем баланс
+        if (currentBalance < productPrice) {
+            alert("Недостаточно средств для покупки!");
+            return;
+        }
+
+        // 3. Отправляем запрос на покупку
+        const buyResponse = await fetch(`/buy/${userId}/${productId}`, { method: 'POST' });
+        const buyData = await buyResponse.json();
+
+        if (!buyResponse.ok) {
+            throw new Error(buyData.message || "Ошибка при покупке");
+        }
+
+        // 4. Показываем новый баланс
+        let newBalance = currentBalance - productPrice;
+        alert(`Покупка успешна! Остаток: $${newBalance.toFixed(2)}`);
+
     } catch (error) {
-        console.error("Ошибка при выполнении запроса:", error);
+        console.error("Ошибка при выполнении покупки:", error);
+        alert("Ошибка: " + error.message);
     }
 }
+
