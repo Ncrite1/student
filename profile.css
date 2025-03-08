@@ -14,6 +14,8 @@ body {
 }
 
 .profile-container {
+    position: absolute;
+    top: 20px;
     background-color: white;
     border-radius: 10px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -45,5 +47,91 @@ h1 {
     font-size: 24px;
     color: #28a745;
     margin-left: auto; 
+}
+
+.main_page {
+    position: absolute;
+    bottom: 15px;
+    padding: 10px 15px;
+    margin: 5px;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background 0.3s;
+    background: #2196F3;
+    color: white;
+}
+
+/* Оформление контейнера виджета */
+.purchases-widget {
+    max-width: 900px;
+    margin: 30px auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+}
+
+/* Заголовок виджета */
+.purchases-widget h2 {
+    text-align: center;
+    font-size: 24px;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+/* Оформление списка покупок */
+.purchase-list {
+    max-height: 400px; /* Ограничиваем высоту для прокрутки */
+    overflow-y: auto; /* Включаем вертикальную прокрутку, если список слишком длинный */
+    padding-right: 10px; /* Добавляем немного отступа, чтобы прокрутка не накладывалась на контент */
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+/* Оформление отдельной покупки */
+.purchase-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s ease;
+}
+
+.purchase-item:hover {
+    background-color: #e0f7fa;
+}
+
+/* Информация о товаре */
+.purchase-info {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.product-name {
+    font-size: 18px;
+    font-weight: bold;
+    color: #333;
+}
+
+/* Отделение даты от цены */
+.purchase-date {
+    font-size: 14px;
+    color: #888;
+}
+
+/* Оформление цены */
+.purchase-price {
+    font-size: 16px;
+    font-weight: bold;
+    color: #28a745;
+    margin-left: 15px; /* Добавляем отступ сверху для разделения с названием */
 }
 

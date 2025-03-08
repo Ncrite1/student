@@ -68,9 +68,10 @@ function login() {
 
 function logout() {
     localStorage.setItem('isRegistered', 'false');
+    localStorage.removeItem('userId'); // Удаляем userId
     window.location.href = '/';
-
 }
+
 
 document.addEventListener("DOMContentLoaded", function () {
     if (localStorage.getItem('isRegistered') === 'true') {
@@ -357,56 +358,74 @@ document.addEventListener("DOMContentLoaded", async function () {
 
 // Получаем кнопку и добавляем обработчик события
 document.getElementById('buyBtn').addEventListener('click', async function() {
-    // Получаем productId из атрибута data-product-id
     const productId = this.getAttribute('data-product-id');
     
-    // Предположим, что userId доступен глобально
-    const userId = 1;  // Замените на реальный userId
+    // Получаем userId из localStorage
+    const userId = localStorage.getItem('userId');
 
-    // Вызов функции buy с userId и productId
+    if (!userId && !sessionStorage.getItem('authErrorShown')) {
+        alert("Ошибка: пользователь не авторизован!");
+        sessionStorage.setItem('authErrorShown', 'true'); // Запоминаем, что ошибка была показана
+        window.location.href = '/reg';
+    }
+
+    console.log("Передача в buy(): userId =", userId, "productId =", productId);
+
     await buy(userId, productId);
 });
 
 
-async function buy(userId, productId, price) {
+async function buy(userId, productId) {
     try {
         console.log(`Попытка покупки товара ID: ${productId} пользователем ID: ${userId}`);
-        
-        // 1. Получаем текущий баланс пользователя
-        const balanceResponse = await fetch(`/user/${userId}/balance`);
-        const balanceData = await balanceResponse.json();
 
-        console.log("Ответ от сервера (баланс):", balanceData); // Логируем ответ сервера
+        // 1. Запрашиваем цену товара из базы данных
+        const productResponse = await fetch(`/api/product/${productId}`);
+        const productData = await productResponse.json();
+
+        console.log("Передача в buy(): userId =", userId, "productId =", productId);
+
+        if (!productResponse.ok) {
+            throw new Error(productData.message || "Ошибка при получении информации о товаре");
+        }
+
+        let productPrice = parseFloat(productData.price);
+        console.log(`Цена товара: ${productPrice}`);
+
+        if (isNaN(productPrice)) {
+            throw new Error("Ошибка: Некорректная цена товара");
+        }
+
+        // 2. Получаем текущий баланс пользователя
+        const balanceResponse = await fetch(`/api/user/${userId}/balance`);
+        const balanceData = await balanceResponse.json();
 
         if (!balanceResponse.ok) {
             throw new Error(balanceData.message || "Ошибка при получении баланса");
         }
 
         let currentBalance = parseFloat(balanceData.balance);
-        let productPrice = parseFloat(price);
+        console.log(`Баланс пользователя: ${currentBalance}`);
 
-        console.log(`Текущий баланс: ${balanceData.balance}, Цена товара: ${price}`);
-        console.log(`После преобразования: currentBalance = ${currentBalance}, productPrice = ${productPrice}`);
-
-        if (isNaN(currentBalance) || isNaN(productPrice)) {
-            throw new Error("Ошибка: некорректные данные баланса или цены товара");
+        if (isNaN(currentBalance)) {
+            throw new Error("Ошибка: Некорректные данные баланса");
         }
 
-        // 2. Проверяем баланс
+        // 3. Проверяем баланс
         if (currentBalance < productPrice) {
             alert("Недостаточно средств для покупки!");
             return;
         }
 
-        // 3. Отправляем запрос на покупку
-        const buyResponse = await fetch(`/buy/${userId}/${productId}`, { method: 'POST' });
+        // 4. Отправляем запрос на покупку
+        const buyResponse = await fetch(`/api/buy/${userId}/${productId}`, { method: 'POST' });
         const buyData = await buyResponse.json();
 
         if (!buyResponse.ok) {
             throw new Error(buyData.message || "Ошибка при покупке");
         }
 
-        // 4. Показываем новый баланс
+        // 5. Показываем новый баланс
         let newBalance = currentBalance - productPrice;
         alert(`Покупка успешна! Остаток: $${newBalance.toFixed(2)}`);
 
@@ -416,3 +435,67 @@ async function buy(userId, productId, price) {
     }
 }
 
+async function recordPurchase(userId, productId) {
+    return new Promise((resolve, reject) => {
+        const sql = `INSERT INTO purchases (user_id, product_id) VALUES (?, ?)`;
+        db.run(sql, [userId, productId], function (err) {
+            if (err) {
+                return reject(err);
+            }
+            resolve(this.lastID); // возвращаем ID добавленной записи
+        });
+    });
+}
+
+// Функция для загрузки истории покупок
+document.addEventListener('DOMContentLoaded', function() {
+    const purchasesContainer = document.querySelector('.purchase-list');
+    
+    if (purchasesContainer) {
+        console.log(purchasesContainer); // Проверим, что элемент найден
+    } else {
+        console.log("Элемент с классом .purchase-list не найден");
+    }
+
+    async function fetchPurchases(userId) {
+        try {
+            const response = await fetch(`/api/purchases/${userId}`);
+            
+            if (!response.ok) {
+                throw new Error("Ошибка при получении покупок");
+            }
+
+            const data = await response.json();
+            console.log("Данные о покупках:", data);  // Логируем данные
+
+            if (purchasesContainer) {
+                purchasesContainer.innerHTML = '';
+
+                if (data && data.length > 0) {
+                    data.forEach(purchase => {
+                        const purchaseItem = document.createElement('div');
+                        purchaseItem.classList.add('purchase-item');
+
+                        purchaseItem.innerHTML = `
+                            <div class="purchase-info">
+                                <span class="product-name">${purchase.productName}</span>
+                                <span class="purchase-date">Дата покупки: ${new Date(purchase.purchaseDate).toLocaleDateString()}</span>
+                            </div>
+                            <div class="purchase-price">
+                                <span>Цена: $${purchase.productPrice.toFixed(2)}</span>
+                            </div>
+                        `;
+                        purchasesContainer.appendChild(purchaseItem);
+                    });
+                } else {
+                    purchasesContainer.innerHTML = '<p>У вас нет покупок.</p>';
+                }
+            }
+        } catch (error) {
+            console.error("Ошибка:", error);
+            alert('Не удалось загрузить покупки');
+        }
+    }
+
+    fetchPurchases(2); // Пример вызова с ID пользователя
+});
