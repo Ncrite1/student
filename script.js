@@ -252,32 +252,9 @@ function go_reg() {
     window.location.href = '/reg';
 }
 
-document.addEventListener("DOMContentLoaded", function () {
-    loadUserProfile();
-});
 
-function loadUserProfile() {
-    const userId = localStorage.getItem('userId');  // Получаем сохранённый ID пользователя
 
-    if (!userId) {
-        alert("Ошибка: пользователь не авторизован!");
-        window.location.href = '/login.html';  // Перенаправляем на страницу входа
-        return;
-    }
 
-    fetch(`/user/${userId}`)  // Запрашиваем данные с сервера
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                document.getElementById("userName").textContent = data.user.name;
-                document.getElementById("userEmail").textContent = data.user.email;
-                document.getElementById("userBalance").textContent = data.user.balance;
-            } else {
-                alert("Ошибка загрузки профиля: " + data.error);
-            }
-        })
-        .catch(error => console.error("Ошибка запроса:", error));
-}
 
 
 document.addEventListener("DOMContentLoaded", async function () {
@@ -356,6 +333,13 @@ document.addEventListener("DOMContentLoaded", async function () {
     }
 });
 
+const buyButton = document.getElementById('buyBtn');
+console.log("Кнопка buyBtn:", buyButton);
+
+if (!buyButton) {
+    console.error("Ошибка: кнопка #buyBtn не найдена в DOM!");
+}
+
 // Получаем кнопку и добавляем обработчик события
 document.getElementById('buyBtn').addEventListener('click', async function() {
     const productId = this.getAttribute('data-product-id');
@@ -363,12 +347,7 @@ document.getElementById('buyBtn').addEventListener('click', async function() {
     // Получаем userId из localStorage
     const userId = localStorage.getItem('userId');
 
-    if (!userId && !sessionStorage.getItem('authErrorShown')) {
-        alert("Ошибка: пользователь не авторизован!");
-        sessionStorage.setItem('authErrorShown', 'true'); // Запоминаем, что ошибка была показана
-        window.location.href = '/reg';
-    }
-
+    
     console.log("Передача в buy(): userId =", userId, "productId =", productId);
 
     await buy(userId, productId);
@@ -435,67 +414,3 @@ async function buy(userId, productId) {
     }
 }
 
-async function recordPurchase(userId, productId) {
-    return new Promise((resolve, reject) => {
-        const sql = `INSERT INTO purchases (user_id, product_id) VALUES (?, ?)`;
-        db.run(sql, [userId, productId], function (err) {
-            if (err) {
-                return reject(err);
-            }
-            resolve(this.lastID); // возвращаем ID добавленной записи
-        });
-    });
-}
-
-// Функция для загрузки истории покупок
-document.addEventListener('DOMContentLoaded', function() {
-    const purchasesContainer = document.querySelector('.purchase-list');
-    
-    if (purchasesContainer) {
-        console.log(purchasesContainer); // Проверим, что элемент найден
-    } else {
-        console.log("Элемент с классом .purchase-list не найден");
-    }
-
-    async function fetchPurchases(userId) {
-        try {
-            const response = await fetch(`/api/purchases/${userId}`);
-            
-            if (!response.ok) {
-                throw new Error("Ошибка при получении покупок");
-            }
-
-            const data = await response.json();
-            console.log("Данные о покупках:", data);  // Логируем данные
-
-            if (purchasesContainer) {
-                purchasesContainer.innerHTML = '';
-
-                if (data && data.length > 0) {
-                    data.forEach(purchase => {
-                        const purchaseItem = document.createElement('div');
-                        purchaseItem.classList.add('purchase-item');
-
-                        purchaseItem.innerHTML = `
-                            <div class="purchase-info">
-                                <span class="product-name">${purchase.productName}</span>
-                                <span class="purchase-date">Дата покупки: ${new Date(purchase.purchaseDate).toLocaleDateString()}</span>
-                            </div>
-                            <div class="purchase-price">
-                                <span>Цена: $${purchase.productPrice.toFixed(2)}</span>
-                            </div>
-                        `;
-                        purchasesContainer.appendChild(purchaseItem);
-                    });
-                } else {
-                    purchasesContainer.innerHTML = '<p>У вас нет покупок.</p>';
-                }
-            }
-        } catch (error) {
-            console.error("Ошибка:", error);
-            alert('Не удалось загрузить покупки');
-        }
-    }
-
-    fetchPurchases(2); // Пример вызова с ID пользователя
-});

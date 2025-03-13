@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="profile.css">
 </head>
 <body>
+    
     <div class="profile-container">
         <h1>Профиль</h1>
 
@@ -14,10 +15,10 @@
             <span>Имя:</span><div id="userName">Nikita</div>
         </div>
         <div class="profile-item">
-            <span>Email:</span><div id="userEmail">nikita@example.com</div>
+            <span>Email:</span><div id="userEmail"></div>
         </div>
         <div class="profile-item">
-            <span>Баланс:</span><div id="userBalance">100</div> $
+            <span>Баланс:</span><div id="userBalance"></div> $
         </div>
     </div>
 
@@ -32,6 +33,11 @@
     
 
     <button class="main_page">Hа Главную страницу</button>
-    <script src="script.js"></script>
-</body>
+    <script>
+        console.log("Проверяем наличие purchase-list в HTML перед загрузкой скрипта!");
+        console.log(document.querySelector('.purchase-list'));
+    </script>
+    <script src="profile.js"></script>
+    </body>
+    
 </html>
