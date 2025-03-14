@@ -1,0 +1,148 @@
+/* Общие стили */
+body {
+    font-family: Arial, sans-serif;
+    background: linear-gradient(to right, #4CAF50, #2E8B57);
+    color: #fff;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; /* Окно на весь экран */
+}
+
+/* Контейнер для товара */
+.product-container {
+    background-color: rgba(255, 255, 255, 0.9); /* Полупрозрачный белый фон */
+    border-radius: 10px;
+    padding: 30px;
+    max-width: 800px;
+    width: 100%;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    text-align: center;
+}
+
+/* Заголовок */
+h1 {
+    font-size: 36px;
+    margin-bottom: 20px;
+    color: #fff;
+}
+
+/* Изображение товара */
+img {
+    width: 100%;
+    max-width: 400px;
+    height: auto;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+/* Описание товара */
+p {
+    font-size: 18px;
+    color: #fff;
+    margin: 10px 0;
+    line-height: 1.6;
+}
+
+/* Цена */
+p span.price {
+    font-size: 24px;
+    font-weight: bold;
+    color: #28a745;
+    margin-top: 20px;
+}
+
+.pr {
+    font-size: 24px;
+    font-weight: bold;
+    color: #28a745;
+    margin-top: 20px;
+}
+
+/* Ссылка */
+a {
+    position: absolute;
+    bottom: 25px;
+    display: inline-block;
+    margin-top: 20px;
+    padding: 10px 20px;
+    background-color: #2196F3;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+a:hover {
+    background-color: #0b7dda;
+}
+
+.container {
+    position: absolute;
+    top: 20px;
+}
+
+.image {
+    position: absolute;
+    top: 20px;
+    left: 10px;
+}
+
+.description{
+    position: absolute;
+    top: 40px;
+    left: 25%;
+    margin-top: 50px;
+    font-size: 18px;
+    word-wrap: break-word; /* Это свойство позволяет тексту переноситься */
+    white-space: normal; /* Убирает перенос по умолчанию */
+    line-height: 1.6; /* Увеличивает расстояние между строками */
+    word-break: break-word; /* Добавляем еще одно свойство для правильного переноса */
+    max-width: 50%; /* Убедимся, что ширина элемента не ограничена */
+}
+
+.price {
+    display: flex;
+    flex-direction: column; /* Элементы располагаются вертикально */
+    gap: 10px; /* Расстояние между элементами */
+    background-color: #fff;
+    color: #000;
+    position: absolute;
+    top: 20px;
+    right: 30px;
+    padding: 10px 15px; /* Добавляем отступы для лучшего отображения */
+    border-radius: 10px; /* Закругление углов */
+}
+
+.buy_product {
+    background: #28a745;
+    color:#fff;
+    padding: 10px 15px;
+    margin: 5px;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.buy_product:hover{
+    background: #2E8B57;
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+    .product-container {
+        padding: 20px;
+    }
+
+    h1 {
+        font-size: 28px;
+    }
+
+    p {
+        font-size: 16px;
+    }
+}
