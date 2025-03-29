@@ -1,0 +1,196 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #2b2b2b;
+    color: #d3c6b8;
+    margin: 0;
+    padding: 0;
+    padding-top: 60px; /* Отступ для фиксированного контейнера */
+    box-sizing: border-box;
+}
+
+.container_enter {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #1e1e1e;
+    padding: 10px 15px;
+    border-bottom: 2px solid #a08674;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+    box-sizing: border-box;
+}
+
+.burger-menu {
+    display: flex;
+    flex-direction: column;
+    cursor: pointer;
+}
+
+.bar {
+    width: 25px;
+    height: 3px;
+    background-color: #d3c6b8;
+    margin: 4px 0;
+}
+
+.menu {
+    display: none;
+    position: absolute;
+    top: 50px;
+    left: 10px;
+    background: #3a3a3a;
+    border: 1px solid #a08674;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.menu a {
+    display: block;
+    text-decoration: none;
+    color: #d3c6b8;
+    padding: 5px 0;
+}
+
+.menu a:hover {
+    color: #a08674;
+}
+
+.NameMenu {
+    display: none;
+    position: absolute;
+    right: 20px;
+    top: 50px;
+    background: #3a3a3a;
+    border: 1px solid #a08674;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.NameMenu a {
+    display: block;
+    text-decoration: none;
+    color: #d3c6b8;
+    padding: 5px 0;
+}
+
+.NameMenu a:hover {
+    color: #a08674;
+}
+
+.middle {
+    text-align: center;
+    flex-grow: 1;
+}
+
+.right {
+    display: flex;
+    align-items: center;
+}
+
+.aNameMenu h2 {
+    margin-right: 15px;
+    color: #d3c6b8;
+    cursor: pointer;
+}
+
+.butt {
+    background-color: #4a4a4a;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    color: #d3c6b8;
+    font-weight: bold;
+}
+
+.butt:hover {
+    background-color: #a08674;
+}
+
+.contacts {
+    background-color: #1e1e1e;
+    color: #d3c6b8;
+    padding: 20px;
+    text-align: center;
+    border-top: 2px solid #a08674;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    box-sizing: border-box;
+    z-index: 1000;
+}
+
+.contacts h2, .contacts h3 {
+    margin-bottom: 10px;
+    color: #a08674;
+}
+
+.contact-info p {
+    margin: 5px 0;
+    font-size: 14px;
+}
+
+.contact-info a {
+    color: #a08674;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.contact-info a:hover {
+    text-decoration: underline;
+}
+
+.social-links {
+    margin-top: 10px;
+}
+
+.social-icon {
+    display: inline-block;
+    padding: 8px 12px;
+    margin: 5px;
+    border-radius: 5px;
+    font-size: 14px;
+    font-weight: bold;
+    text-decoration: none;
+    color: #1e1e1e;
+    transition: 0.3s;
+}
+
+.github { background-color: #333; color: #fff; }
+.tg { background-color: #0088cc; color: #fff; }
+
+.social-icon:hover {
+    opacity: 0.8;
+}
+
+body {
+    padding-bottom: 80px; /* Чтобы контент не прилипал к фиксированному футеру */
+}
+
+.container {
+    position: absolute;
+    top: 11%; /* Располагаем контейнер внизу страницы */
+    left: 50%;
+    transform: translateX(-50%); /* Центрируем по горизонтали */
+    display: flex;
+    justify-content: space-between; /* Распределяем элементы по краям */
+    width: 90%; /* Для того, чтобы оставить немного пространства с боков */
+}
+
+.buy, .sell {
+    font-size: 36px;
+    font-weight: bold;
+    color: white;
+}
+
+.sell {
+    text-align: left; /* Выравнивание текста по левому краю */
+}
+
+.buy {
+    text-align: right; /* Выравнивание текста по правому краю */
+}

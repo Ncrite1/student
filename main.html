@@ -1,11 +1,10 @@
-
 <!DOCTYPE html>
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Главная страница</title>
-    <link rel="stylesheet" href="main_css.css"> 
+    <link rel="stylesheet" href="main.css"> 
 </head>
 <body>
     
@@ -18,9 +17,9 @@
     
        
         <div class="menu" id="menu">
-            <a href="/#" onclick="is_user_login(event, '/disciplines')">Дисциплины</a>
+            <a href="/#" onclick="is_user_login(event, '/catalog')">Каталог</a>
             <a href="/#" onclick="is_user_login(event, '/create_project')">Создать товар</a>
-            <a href="/#" onclick="is_user_login(event, '/tasks')">Задания</a>
+            <a href="/#" onclick="is_user_login(event, '/tasks')">Пользователи</a>
         </div>
 
         <div class="NameMenu" id="NameMenu">
@@ -28,7 +27,7 @@
             <a onclick="logout()">Выйти</button></a>
         </div>
 
-        <div class="middle"><h1 id="welcome-message">Добро пожаловать на сайт!</h1></div>
+        <div class="middle"><h1 id="welcome-message">Добро пожаловать!</h1></div>
         <div class="right">
         <a class="aNameMenu" onclick="toggleNameMenu()"><h2 id="acc_name"></h2></a>
         
@@ -36,13 +35,19 @@
 
         </div>
     </div>
-
-    <div class="product-grid" id="productGrid">
-       
+    <div class="container">
+        <div class="buy">Покупай</div>
+        <div class="sell">Продавай</div>
     </div>
+    
 
-
-
-    <script src="/script.js"></script>
+    <section class="contacts">
+        <div class="social-links">
+            <a href="https://github.com/Ncrite1/student" target="_blank" class="social-icon github">GitHub</a>
+            <a href="https://t.me" target="_blank" class="social-icon tg">Telegram</a>
+        </div>
+    </section>
+    
+<script src="main.js"></script>
 </body>
 </html>
