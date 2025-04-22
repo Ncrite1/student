@@ -1,8 +1,8 @@
 /* Общие стили */
 body {
     font-family: Arial, sans-serif;
-    background: linear-gradient(to right, #4CAF50, #2E8B57);
-    color: #fff;
+    background: #2b2b2b;
+    color: #d3c6b8;
     margin: 0;
     padding: 0;
     display: flex;
@@ -13,7 +13,7 @@ body {
 
 /* Контейнер для товара */
 .product-container {
-    background-color: rgba(255, 255, 255, 0.9); /* Полупрозрачный белый фон */
+    background-color: d3c6b8(255, 255, 255, 0.9); /* Полупрозрачный белый фон */
     border-radius: 10px;
     padding: 30px;
     max-width: 800px;
@@ -68,7 +68,7 @@ a {
     display: inline-block;
     margin-top: 20px;
     padding: 10px 20px;
-    background-color: #2196F3;
+    background-color: #a08674;
     color: white;
     text-decoration: none;
     border-radius: 5px;
@@ -76,7 +76,7 @@ a {
 }
 
 a:hover {
-    background-color: #0b7dda;
+    background-color: #7a613f;
 }
 
 .container {
@@ -117,7 +117,7 @@ a:hover {
 }
 
 .buy_product {
-    background: #28a745;
+    background-color: #a08674;
     color:#fff;
     padding: 10px 15px;
     margin: 5px;
@@ -129,8 +129,32 @@ a:hover {
 }
 
 .buy_product:hover{
-    background: #2E8B57;
+    background-color: #7a613f;
 }
+
+.tags {
+    position: absolute;
+    bottom: 75%; /* Располагаем на 10% от низа страницы */
+    right: 1.6%; /* 5% от правой стороны */
+    width: auto; /* Автоматическая ширина */
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end; /* Выравниваем теги по правому краю */
+}
+
+.tags p {
+    background-color: #f2f2f2;
+    padding: 5px 10px;
+    border-radius: 15px;
+    font-size: 14px;
+    color: #333;
+    margin: 0;
+}
+
+
+
+
+
 
 /* Адаптивность */
 @media (max-width: 768px) {

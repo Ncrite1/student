@@ -1,6 +1,6 @@
 body {
     font-family: Arial, sans-serif;
-    background: linear-gradient(to right, #4caf4f, #2E8B57);
+    background: #2b2b2b;
     color: #fff;
     display: flex;
     justify-content: center;
@@ -46,11 +46,11 @@ button {
 }
 
 button:first-of-type {
-    background: #ff9800;
+    background-color: #a08674;
     color: white;
 }
 button:first-of-type:hover {
-    background: #F19511;
+    background: #ff9800;
 }
 
 button:last-of-type {

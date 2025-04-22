@@ -311,3 +311,132 @@ async function buy(userId, productId) {
     }
 }
 
+
+function filter_button (){
+    if (filterWindow.style.display === "none" || filterWindow.style.display === "") {
+        filterWindow.style.display = "block"; // Показываем окно
+    } else {
+        filterWindow.style.display = "none"; // Скрываем окно
+    }
+}
+
+
+function search_button() {
+    const searchName = document.getElementById("search-name").value; // Получаем значение из input
+
+    let modifiedSearchName = searchName; // Если длина меньше 6, не меняем строку
+
+    if (searchName.length > 6) {
+        modifiedSearchName = searchName.slice(0, -3); // Убираем последние 3 символа, если длина больше 6
+    }
+
+    fetchProducts(modifiedSearchName); // Передаем измененное имя для поиска
+    console.log('grrgggr');
+}
+
+function fetchProducts(modifiedSearchName) {
+    fetch('/api/products')
+        .then(response => response.json())
+        .then(data => {
+            const filteredProducts = data.filter(product => {
+                return containsSequence(product.name.toLowerCase(), modifiedSearchName.toLowerCase());
+            });
+
+            displayProducts(filteredProducts);
+        })
+        .catch(error => {
+            console.error('Ошибка при получении данных товаров:', error);
+        });
+}
+
+function containsSequence(productName, searchStr) {
+    let j = 0; // Индекс для строки поиска
+
+    // Проходим по символам в названии товара
+    for (let i = 0; i < productName.length; i++) {
+        if (productName[i] === searchStr[j]) {
+            j++; // Если символы совпали, переходим к следующему символу из searchStr
+        }
+        if (j === searchStr.length) {
+            return true; // Все символы из searchStr найдены в последовательности
+        }
+    }
+    return false; // Если не нашли последовательности
+}
+
+function displayProducts(filteredProducts) {
+    const productGrid = document.getElementById('productGrid');
+    productGrid.innerHTML = ''; // Очищаем контейнер перед добавлением новых товаров
+
+    filteredProducts.forEach(product => {
+        const productCard = document.createElement('div');
+        productCard.classList.add('product-card');
+
+        const productImage = document.createElement('img');
+        productImage.src = `/uploads/${product.image}`; // Проверь путь!
+        productImage.alt = product.name;
+        productImage.classList.add('product-image');
+        productCard.appendChild(productImage);
+
+        const productName = document.createElement('div');
+        productName.classList.add('product-name');
+        productName.textContent = product.name;
+        productCard.appendChild(productName);
+
+        const productPrice = document.createElement('div');
+        productPrice.classList.add('product-price');
+        productPrice.textContent = `$${product.price}`;
+        productCard.appendChild(productPrice);
+
+        const productPage = document.createElement('button');
+        productPage.classList.add('buy-btn');
+        productPage.textContent = 'Подробнее';
+        productCard.appendChild(productPage);
+        
+        productPage.addEventListener('click', () => {
+            window.location.href = `/product/${product.id}`;
+        });
+
+        productGrid.appendChild(productCard);
+    });
+}
+
+function applyFilters() {
+    const checkboxes = document.querySelectorAll('input[name="tag"]:checked');
+    const selectedTags = Array.from(checkboxes).map(cb => cb.value.trim());
+
+    if (selectedTags.length === 0) {
+        loadAllProducts();
+        filterWindow.style.display = "none";
+    }else{
+        fetch('/api/products')
+            .then(res => res.json())
+            .then(data => {
+                const filtered = data.filter(product => {
+                    if (!product.tags) return false;
+
+                    const productTags = product.tags
+                        .split(',')
+                        .map(tag => tag.replace('×', '').trim());
+
+                    return selectedTags.some(tag => productTags.includes(tag));
+                });
+
+                displayProducts(filtered);
+            })
+            .catch(err => {
+                console.error('Ошибка при получении или фильтрации товаров:', err);
+            });
+            filterWindow.style.display = "none";
+    }
+}
+
+function loadAllProducts() {
+    fetch('/api/products')
+        .then(res => res.json())
+        .then(data => displayProducts(data))
+        .catch(err => console.error('Ошибка при загрузке товаров:', err));
+}
+
+console.log(product.tags); // Проверь, что выводится правильное значение
+

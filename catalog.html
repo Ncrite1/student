@@ -37,6 +37,45 @@
         </div>
     </div>
 
+    <div class="product-search">
+        <button class="filter-button" onclick="filter_button()">Фильтр</button>
+        <input id="search-name" class="product-search-name" placeholder="Название товара">
+        <button id="search-button" class="filter-button" onclick="search_button()">Поиск</button>
+    </div>
+
+    <div class="filter-window" id="filterWindow">
+        <h3>Фильтры</h3>
+        <div class="filter-window-conteiner">
+            <div class="main-categories">
+                <p>Основные категории</p>
+                <label><input type="checkbox" name="tag" value="Электроника"> Электроника</label><br>
+                <label><input type="checkbox" name="tag" value="Одежда"> Одежда</label><br>
+                <label><input type="checkbox" name="tag" value="Книги"> Книги</label><br>
+                <label><input type="checkbox" name="tag" value="Аксессуары"> Аксессуары</label><br>
+            </div>
+            <div class="electronics">
+                <p>Электроника</p>
+                <label><input type="checkbox" name="tag" value="Одежда"> Компьютеры</label><br>
+                <label><input type="checkbox" name="tag" value="Книги"> Телевизоры</label><br>
+                <label><input type="checkbox" name="tag" value="Аксессуары"> Планшеты</label><br>
+            </div>
+            <div class="clothes">
+                <p>Одежда</p>
+                <label><input type="checkbox" name="tag" value="Электроника"> Мужская одежда</label><br>
+                <label><input type="checkbox" name="tag" value="Одежда"> Женская одежда</label><br>
+                <label><input type="checkbox" name="tag" value="Книги"> Обувь</label><br>
+            </div>
+            <div class="accessories">
+                <p>Аксессуары</p>
+                <label><input type="checkbox" name="tag" value="Одежда"> Сумки</label><br>
+                <label><input type="checkbox" name="tag" value="Книги"> Часы</label><br>
+                <label><input type="checkbox" name="tag" value="Аксессуары"> Украшения</label><br>
+            </div>
+        </div>
+
+        <button onclick="applyFilters()">Применить</button>
+    </div>
+
     <div class="product-grid" id="productGrid">
        
     </div>

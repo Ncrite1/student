@@ -18,11 +18,34 @@
         <p><%= product.description %></p>
     </div>    
     <div class="price">
-        <div class="pr" onclick="buy()">Цена: $<%= product.price %></div>
+        <div class="pr">Цена: $<%= product.price %></div>
         <button id="buyBtn" class="buy_product" data-product-id="<%= product.id %>">Купить</button>
-
     </div>
-    <a href="/">Вернуться в каталог</a>
+
+    <div class="tags">
+        <h2>Теги</h2>
+        <!-- Здесь мы добавляем теги внутри span -->
+        <p id="productTags"></p>
+    </div>
+
+    <script>
+        // Получаем теги
+        let tags = "<%= product.tags %>";
+        
+        // Убираем символы "×" и разделяем теги
+        tags = tags.replace(/×/g, '').trim();
+        let tagsArray = tags.split(',');
+
+        // Выводим теги в столбик
+        let tagsContainer = document.getElementById('productTags');
+        tagsArray.forEach(tag => {
+            let tagElement = document.createElement('span');
+            tagElement.textContent = tag;
+            tagsContainer.appendChild(tagElement);
+        });
+    </script>
+
+    <a href="/catalog">Вернуться в каталог</a>
 
     <script src="/script.js"></script>
 </body>

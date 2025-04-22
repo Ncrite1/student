@@ -10,37 +10,58 @@
     <div class="container">
         <h1>Создание Товара</h1>
         
-        <!-- Форма для создания товара -->
         <form id="createProductForm">
-            <!-- Название товара -->
             <div class="form-group">
                 <label for="productName">Название товара</label>
                 <input type="text" id="productName" name="name" placeholder="Введите название товара" required>
             </div>
 
-            <!-- Описание товара -->
             <div class="form-group">
                 <label for="productDescription">Описание товара</label>
                 <textarea id="productDescription" name="description" placeholder="Введите описание товара" required></textarea>
             </div>
 
-            <!-- Цена товара -->
             <div class="form-group">
                 <label for="productPrice">Цена товара</label>
                 <input type="number" id="productPrice" name="price" placeholder="Введите цену товара" required>
             </div>
 
-            <!-- Фото товара -->
             <div class="form-group">
                 <label for="productImage">Добавить фото товара</label>
                 <input type="file" id="productImage" name="image" accept="image/*" required>
             </div>
 
-            <!-- Кнопка отправки -->
-            <button type="submit" id="submitBtn" onclick="create_product()">Создать товар</button>
+            <div class="form-group">
+                <label for="productTag">Добавить теги товара</label>
+                <input id="productTag" name="tag" onclick="show_tags_tab()">
+            </div>
+
+            <div id="tags_tab" class="tags-tab">
+                <p>Основные категории:</p>
+                <label onclick="add_tag(this.textContent)">Электроника</label>
+                <label onclick="add_tag(this.textContent)">Одежда</label>
+                <label onclick="add_tag(this.textContent)">Книги</label>
+                <label onclick="add_tag(this.textContent)">Аксессуары</label>
+                <p>Электроника</p>
+                <label onclick="add_tag(this.textContent)">Компьютеры</label>
+                <label onclick="add_tag(this.textContent)">Телевизоры</label>
+                <label onclick="add_tag(this.textContent)">Планшеты</label>
+                <p>Одежда</p>
+                <label onclick="add_tag(this.textContent)">Мужская одежда</label>
+                <label onclick="add_tag(this.textContent)">Женская одежда</label>
+                <label onclick="add_tag(this.textContent)">Обувь</label>
+                <p>Аксессуары</p>
+                <label onclick="add_tag(this.textContent)">Сумки</label>
+                <label onclick="add_tag(this.textContent)">Часы</label>
+                <label onclick="add_tag(this.textContent)">Украшения</label>
+            </div>
+
+            <div id="selected-tags" class="selected-tags"></div>
+
+            <a href="/"><button type="submit" id="submitBtn" onclick="create_product()">Создать товар</button></a>
         </form>
     </div>
-
+    <button class="main_page" onclick="go_main()">Hа Главную страницу</button>
     <script src="/create_project.js"></script>
 </body>
 </html>

@@ -73,4 +73,8 @@ document.addEventListener("DOMContentLoaded", async function () {
         console.error("Ошибка при загрузке истории покупок:", error);
         purchaseList.innerHTML = "<p>Не удалось загрузить данные.</p>";
     }
-});x
+});
+
+function go_main (){
+    window.location.href = '/';
+}
