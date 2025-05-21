@@ -2,9 +2,23 @@ body {
     font-family: Arial, sans-serif;
     background-color: #2b2b2b;
     color: #d3c6b8;
+    padding-top: 60px; /* Отступ для фиксированного контейнера */
+    box-sizing: border-box;
+}
+
+html, body {
+    height: 100%;
     margin: 0;
     padding: 0;
-    padding-top: 60px; /* Отступ для фиксированного контейнера */
+    display: flex;
+    flex-direction: column;
+}
+
+main {
+    margin-top: 50px;
+    flex: 1; /* Растягивается на всё свободное место */
+    padding-top: 60px;  /* если у тебя фиксированный хедер */
+    padding-bottom: 80px; /* чтобы .contacts не перекрывал */
     box-sizing: border-box;
 }
 
@@ -194,3 +208,218 @@ body {
 .buy {
     text-align: right; /* Выравнивание текста по правому краю */
 }
+
+.img-info {
+    position: absolute;
+    top: 20%;
+    right: 36.4%;
+    padding: 20px 30px; /* внутренние отступы */
+    border-radius: 12px; /* скруглённые углы */
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.7); /* тень для глубины */
+    color: #f0f0f0; /* светлый текст */
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 1rem;
+    line-height: 1.5;
+    backdrop-filter: blur(8px); /* размытие фона позади */
+    border: 1px solid rgba(255, 255, 255, 0.1); /* тонкая светлая рамка */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    display: flex;
+    flex-direction: column; /* чтобы текст шёл вертикально */
+    justify-content: center; /* центр по вертикали */
+    align-items: center; /* центр по горизонтали */
+    text-align: center; /* центр текста */
+}
+
+.img-info:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.9);
+}
+
+/* Можно добавить стиль для заголовка и абзаца внутри */
+.img-info h2 {
+    margin-top: 0;
+    margin-bottom: 10px;
+    font-weight: 700;
+    font-size: 1.4rem;
+    color: #ccc; /* яркий акцент */
+}
+
+.img-info2 {
+    position: absolute;
+    top: 28%;
+    left: 2%;
+    padding: 20px 30px; /* внутренние отступы */
+    border-radius: 12px; /* скруглённые углы */
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.7); /* тень для глубины */
+    color: #f0f0f0; /* светлый текст */
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 1rem;
+    line-height: 1.5;
+    backdrop-filter: blur(8px); /* размытие фона позади */
+    border: 1px solid rgba(255, 255, 255, 0.1); /* тонкая светлая рамка */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    display: flex;
+    flex-direction: column; /* чтобы текст шёл вертикально */
+    justify-content: center; /* центр по вертикали */
+    align-items: center; /* центр по горизонтали */
+    text-align: center; /* центр текста */
+}
+
+.img-info2:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.9);
+}
+
+/* Можно добавить стиль для заголовка и абзаца внутри */
+.img-info2 h2 {
+    margin-top: 0;
+    margin-bottom: 10px;
+    font-weight: 700;
+    font-size: 1.4rem;
+    color: #ccc; /* яркий акцент */
+}
+
+.img-info3 {
+    position: absolute;
+    top: 28%;
+    right: 2%;
+    padding: 20px 30px; /* внутренние отступы */
+    border-radius: 12px; /* скруглённые углы */
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.7); /* тень для глубины */
+    color: #f0f0f0; /* светлый текст */
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 1rem;
+    line-height: 1.5;
+    backdrop-filter: blur(8px); /* размытие фона позади */
+    border: 1px solid rgba(255, 255, 255, 0.1); /* тонкая светлая рамка */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    display: flex;
+    flex-direction: column; /* чтобы текст шёл вертикально */
+    justify-content: center; /* центр по вертикали */
+    align-items: center; /* центр по горизонтали */
+    text-align: center; /* центр текста */
+}
+
+.img-info3:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.9);
+}
+
+/* Можно добавить стиль для заголовка и абзаца внутри */
+.img-info3 h2 {
+    margin-top: 0;
+    margin-bottom: 10px;
+    font-weight: 700;
+    font-size: 1.4rem;
+    color: #ccc; /* яркий акцент */
+}
+
+/* Мобильное меню - скрыто по умолчанию */
+@media (max-width: 768px) {
+    .container_enter {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .middle {
+        text-align: left;
+        width: 100%;
+    }
+
+    .right {
+        width: 100%;
+        justify-content: space-between;
+    }
+
+    .img-info, .img-info2, .img-info3 {
+        position: static;
+        margin: 10px auto;
+        width: 90%;
+        max-width: 100%;
+        top: auto;
+        left: auto;
+        right: auto;
+        transform: none;
+    }
+
+    .container {
+        top: auto;
+        position: relative;
+        flex-direction: column;
+        width: 100%;
+        padding: 20px 0;
+    }
+
+    .buy, .sell {
+        font-size: 24px;
+        text-align: center;
+        width: 100%;
+    }
+
+    .menu, .NameMenu {
+        top: 100%;
+        left: 0;
+        right: auto;
+        width: 100%;
+        border-radius: 0;
+    }
+
+    .contacts {
+        position: static;
+        padding: 20px 10px;
+    }
+
+    body {
+        padding-bottom: 120px; /* больше отступ, чтобы футер не перекрывал */
+    }
+}
+
+/* Очень маленькие экраны */
+@media (max-width: 480px) {
+    .img-info, .img-info2, .img-info3 {
+        font-size: 0.9rem;
+        padding: 15px;
+    }
+
+    .butt {
+        padding: 6px 10px;
+        font-size: 14px;
+    }
+
+    .bar {
+        width: 20px;
+        height: 2px;
+    }
+
+    .social-icon {
+        font-size: 12px;
+        padding: 6px 8px;
+    }
+
+    .contacts h2, .contacts h3 {
+        font-size: 1rem;
+    }
+
+    .contact-info p {
+        font-size: 12px;
+    }
+}
+
+@media (max-width: 768px) {
+    .img-img1, .img-img2, .img-img3 {
+        max-width: 90vw;  /* почти весь экран, но с отступами */
+        height: auto;
+        margin: 10px auto;
+        display: block;
+    }
+}
+
+@media (max-width: 480px) {
+    .img-img1, .img-img2, .img-img3 {
+        max-width: 100%;
+        border-radius: 8px;
+    }
+}
+
+
+

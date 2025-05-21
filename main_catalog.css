@@ -254,16 +254,18 @@ h1 {
 .filter-window {
     display: none;
     position: fixed;
-    top: 25%;   
-    left: 43%;
-    transform: translate(-50%, -30%);
+    top: 20%;
+    left: 50%;
+    transform: translate(-50%, -20%);
     background-color: #2e2e2e;
     border: 2px solid #a08674;
     padding: 20px;
     border-radius: 12px;
     z-index: 999;
     color: #f1e9e0;
-    width: auto;
+    width: 400px; /* фиксированная стартовая ширина */
+    max-width: 90%; /* адаптация под маленькие экраны */
+    box-sizing: border-box;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.4);
 }
 
@@ -306,5 +308,168 @@ h1 {
 
 .filter-window-conteiner {
     display: flex;
+    flex-wrap: wrap;
     gap: 15px;
+}
+
+/* === АДАПТИВНОСТЬ === */
+
+/* Планшеты и ниже (<= 1024px) */
+@media (max-width: 1024px) {
+    .container_enter {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+
+    .middle {
+        text-align: left;
+        width: 100%;
+    }
+
+    .right {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+        width: 100%;
+    }
+
+    .product-grid {
+        gap: 30px;
+    }
+
+    .product-search-name {
+        width: 60%;
+    }
+
+}
+
+/* Мобильные устройства (<= 768px) */
+@media (max-width: 768px) {
+    .container_enter {
+        padding: 10px;
+    }
+
+    .burger-menu {
+        margin-bottom: 10px;
+    }
+
+    .middle h1 {
+        font-size: 24px;
+    }
+
+    #acc_name {
+        font-size: 16px;
+    }
+
+    .butt {
+        width: 100%;
+        font-size: 14px;
+    }
+
+    .product-grid {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .product-card {
+        width: 90%;
+        height: auto;
+    }
+
+    .product-image {
+        height: 180px;
+    }
+
+    .product-search {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .product-search-name {
+        width: 100%;
+    }
+
+    .filter-button {
+        width: 100%;
+    }
+
+    
+    .menu, .NameMenu {
+        left: 0;
+        right: 0;
+        width: 100%;
+        box-sizing: border-box;
+    }
+}
+
+/* Маленькие телефоны (<= 480px) */
+@media (max-width: 480px) {
+    .middle h1 {
+        font-size: 20px;
+    }
+
+    .product-card {
+        padding: 8px;
+    }
+
+    .product-name {
+        font-size: 14px;
+    }
+
+    .buy-btn {
+        font-size: 14px;
+        padding: 8px;
+    }
+
+    .product-price {
+        font-size: 16px;
+    }
+
+    .product-description {
+        font-size: 13px;
+    }
+
+}
+
+@media (max-width: 768px) {
+    .filter-window {
+        top: 20%;
+        width: 90%;
+        padding: 10px 15px;
+    }
+
+    .filter-window-conteiner {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .filter-window button {
+        width: 100%;
+    }
+}
+
+@media (max-width: 480px) {
+    .filter-window {
+        padding: 10px;
+        border-radius: 8px;
+        padding: 8px 12px; /* чуть меньше ещё */
+    }
+
+    .filter-window p {
+        font-size: 14px;
+    }
+
+    .filter-window h3 {
+        font-size: 16px;
+    }
+
+    .filter-window button {
+        font-size: 14px;
+        padding: 6px 12px;
+    }
+
+    .filter-window label {
+        font-size: 14px;
+    }
 }

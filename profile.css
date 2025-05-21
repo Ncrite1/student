@@ -135,3 +135,84 @@ h1 {
     margin-left: 15px; /* Добавляем отступ сверху для разделения с названием */
 }
 
+@media (max-width: 768px) {
+    .profile-container {
+        width: 90%;
+        padding: 15px;
+        top: 10px;
+    }
+
+    h1 {
+        font-size: 22px;
+        margin-bottom: 15px;
+    }
+
+    .profile-item {
+        flex-direction: column;
+        align-items: flex-start;
+        font-size: 16px;
+    }
+
+    #userBalance {
+        font-size: 20px;
+        margin-left: 0;
+        margin-top: 5px;
+    }
+
+    .main_page {
+        font-size: 14px;
+        padding: 8px 12px;
+    }
+
+    .purchases-widget {
+        padding: 15px;
+        max-width: 95%;
+    }
+
+    .purchases-widget h2 {
+        font-size: 20px;
+        margin-bottom: 15px;
+    }
+
+    .purchase-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+    }
+
+    .purchase-price {
+        margin-left: 0;
+    }
+}
+
+@media (max-width: 480px) {
+    h1 {
+        font-size: 20px;
+    }
+
+    .profile-container {
+        width: 95%;
+        padding: 10px;
+        border-radius: 8px;
+    }
+
+    .purchases-widget {
+        padding: 10px;
+        border-radius: 8px;
+    }
+
+    .purchase-list {
+        max-height: 300px;
+        padding-right: 5px;
+    }
+
+    .product-name {
+        font-size: 16px;
+    }
+
+    .purchase-date,
+    .purchase-price {
+        font-size: 14px;
+    }
+}
+

@@ -85,6 +85,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 });
 
+
 document.addEventListener("DOMContentLoaded", function () {
     if (localStorage.getItem('isRegistered') === 'false') {
         const logout_button = document.getElementById('logout_button');
@@ -148,10 +149,6 @@ function go_login() {
 function go_reg() {
     window.location.href = '/reg';
 }
-
-
-
-
 
 
 document.addEventListener("DOMContentLoaded", async function () {
